@@ -122,6 +122,17 @@
               context.drawImage(c.icon, (c.x - 10), (c.y - 12), 20, 20);
               c.x -= c.speed;
             });
+             cheese.forEach( (c) => {
+              if (areColliding(mouse, c)) {
+                mouse.score++;
+                c.x = x;
+                c.y = c.y = c.rad + (Math.random()*(h - (2*c.rad)));
+              }
+              if ((c.x - c.rad) < 0) {
+                c.x = x;
+                c.y = c.rad + (Math.random()*(h - (2*c.rad)));
+              }
+            });
           requestAnimationFrame(gameMaker);
         }
         requestAnimationFrame(gameMaker);
