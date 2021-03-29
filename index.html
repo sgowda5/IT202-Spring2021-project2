@@ -82,6 +82,7 @@
             context.drawImage(cat.icon, (cat.x - 10), (cat.y - 10), 20, 20);
             cat.x -= cat.speed;
           });        
+          requestAnimationFrame(gameMaker);
         }
         requestAnimationFrame(gameMaker);
       });
