@@ -28,7 +28,6 @@
 
       let canvas = document.querySelector("canvas");
       let context = canvas.getContext("2d");
-
       let w= canvas.width;
       let h= canvas.height;
 
@@ -37,31 +36,52 @@
       // player
       let mouse = {x:(w/2)-80, y:(h/2), icon:mousePic,speed:15, score:0, health:10, rad:10};
 
- 
+      const catPic = new Image();
+      catPic.src = 'images/cat.svg';
+
+      let totalCats = 3;
+      let cats = [];
+
+      let x = w - 30;
+      for (let i = 0; i < totalCats; i++) {
+        let y = 15 + (Math.random() * (h - (30)));
+        cats.push({x:x, y:y, speed:2, icon:catPic, rad:10});
+      }
+
       const background = new Image();
       background.src = 'images/background.jpg';
       let startGame = false;
 
       document.addEventListener("DOMContentLoaded", (event) => {
-        
-        let gameMaker = () => {
+         
+        function gameMaker() {
           context.clearRect(0, 0, w, h);
 
           context.drawImage(background, 0, 0, w, h);
-            context.font = "bold 10px Verdana";
-            context.fillStyle = "black";
+          context.font = "bold 10px Verdana";
+          context.fillStyle = "black";
+          context.beginPath();
+          context.arc(mouse.x, mouse.y, mouse.rad, 0, 2*Math.PI);
+          context.fillStyle = "black";
+          context.closePath();
+          context.fill();
+          context.drawImage(mouse.icon, (mouse.x - 10), (mouse.y - 12), 20, 20);
+
+          if ((mouse.y + mouse.rad) > h) {
+            mouse.y = h - mouse.rad;
+          } else if ((mouse.y - mouse.rad) < 0) {
+            mouse.y = mouse.rad;
+          }
+
+          cats.forEach((cat) => {
             context.beginPath();
-            context.arc(mouse.x, mouse.y, mouse.rad, 0, 2*Math.PI);
-            context.fillStyle = "black";
+            context.arc(cat.x, cat.y, cat.rad, 0, 2*Math.PI);
+            context.fillStyle = "crimson";
             context.closePath();
             context.fill();
-            context.drawImage(mouse.icon, (mouse.x - 10), (mouse.y - 12), 20, 20);
-
-            if ((mouse.y + mouse.rad) > h) {
-              mouse.y = h - mouse.rad;
-            } else if ((mouse.y - mouse.rad) < 0) {
-              mouse.y = mouse.rad;
-            }         
+            context.drawImage(cat.icon, (cat.x - 10), (cat.y - 10), 20, 20);
+            cat.x -= cat.speed;
+          });        
         }
         requestAnimationFrame(gameMaker);
       });
@@ -74,5 +94,6 @@
         }
       });
     </script>
+
   </body>
 </html>
