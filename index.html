@@ -12,7 +12,7 @@
       width: 100vw;
     }
     body {
-      background-color: "white";
+      background-color: "black";
       margin: 0;
       padding: 0;
     }
@@ -33,12 +33,10 @@
 
       const mousePic = new Image();
       mousePic.src = 'images/mouse.svg';
-      // player
       let mouse = {x:(w/2)-80, y:(h/2), icon:mousePic,speed:15, score:0, health:10, rad:10};
 
       const catPic = new Image();
       catPic.src = 'images/cat.svg';
-
       let totalCats = 3;
       let cats = [];
 
@@ -58,31 +56,42 @@ let currentLevel = 1;
       let cheese = [];
 
       for (let i = 0; i < totalCheese; i++) {
-        let y = 15 + (Math.random() * (h - (30)));
-        cheese.push({x:x, y:y, speed:2, icon:cheesePic, rad:10});
+      let y = 15 + (Math.random() * (h - (30)));
+      cheese.push({x:x, y:y, speed:2, icon:cheesePic, rad:10});
       }
 
       const background = new Image();
       background.src = 'images/background.jpg';
       let startGame = false;
-
       document.addEventListener("DOMContentLoaded", (event) => {
          let areColliding = (c1, c2) => {
-          let dy = c1.y - c2.y;
-          let dx = c1.x - c2.x;
-          let dist = Math.sqrt(dx*dx + dy*dy);
-          if (dist < (c1.rad + c2.rad)) {
+          let dy = c1.y-c2.y;
+          let dx = c1.x-c2.x;
+          let dist = Math.sqrt(dx*dx+dy*dy);
+          if (dist<(c1.rad+c2.rad)) {
             return true;
           }
           return false;
         }
+
         function gameMaker() {
           ctx.clearRect(0, 0, w, h);
-
+          if (!startGame == true) {
+              ctx.font = "bold 25px Verdana";
+              ctx.fillStyle = "black";
+              ctx.fillText("Welcome", w/2-80, h/2-50);
+              ctx.font = "bold 10px Verdana";
+              ctx.fillText("Press Up arrow to go up", w/2-70, h/2-30 );
+              ctx.fillText("Press Down arrow to go down", w/2-70, h/2-15);
+              ctx.fillText("Esacpe the cats or they will eat you", w/2-70, h/2);
+              ctx.fillText("Collect the cheese so you can eat it", w/2-70, h/2+15);
+              ctx.fillText("Press Space to Start", w/2 - 70, h/2 + 40);
+              requestAnimationFrame(gameMaker);
+          } else {
             ctx.drawImage(background, 0, 0, w, h);
             ctx.font = "bold 10px Verdana";
             ctx.fillStyle = "black";
-            ctx.fillText("Score : " + mouse.score + " Health : " + mouse.health + " Level : " + currentLevel, 20, 10);
+            ctx.fillText("Score : "+mouse.score+" Health : "+mouse.health+" Level : "+currentLevel, 20, 10);
             ctx.beginPath();
             ctx.arc(mouse.x, mouse.y, mouse.rad, 0, 2*Math.PI);
             ctx.fillStyle = "black";
@@ -90,9 +99,9 @@ let currentLevel = 1;
             ctx.fill();
             ctx.drawImage(mouse.icon, (mouse.x - 10), (mouse.y - 12), 20, 20);
 
-          if ((mouse.y + mouse.rad) > h) {
-            mouse.y = h - mouse.rad;
-          } else if ((mouse.y - mouse.rad) < 0) {
+          if ((mouse.y+mouse.rad)>h) {
+            mouse.y = h-mouse.rad;
+          } else if ((mouse.y-mouse.rad) < 0) {
             mouse.y = mouse.rad;
           }
 
@@ -111,11 +120,11 @@ let currentLevel = 1;
               if (areColliding(mouse, cat)) {
                 mouse.health--;
                 cat.x = x;
-                cat.y = cat.y = cat.rad + (Math.random()*(h - (2*cat.rad)));
+                cat.y = 10+(Math.random()*(h-(20)));
               }
-              if ((cat.x - cat.rad) < 0) {
+              if ((cat.x-cat.rad)<0) {
                 cat.x = x;
-                cat.y = cat.rad + (Math.random()*(h - (2*cat.rad)));
+                cat.y = 10+(Math.random()*(h-(20)));
               }
             });
 
@@ -123,18 +132,18 @@ let currentLevel = 1;
               ctx.beginPath();
               ctx.arc(c.x, c.y, c.rad, 0, 2*Math.PI);
               ctx.closePath();
-              ctx.drawImage(c.icon, (c.x - 10), (c.y - 12), 20, 20);
+              ctx.drawImage(c.icon, (c.x-10), (c.y-12), 20, 20);
               c.x -= c.speed;
             });
              cheese.forEach( (c) => {
               if (areColliding(mouse, c)) {
                 mouse.score++;
                 c.x = x;
-                c.y = c.y = c.rad + (Math.random()*(h - (2*c.rad)));
+                c.y = 10+(Math.random()*(h-(20)));
               }
-              if ((c.x - c.rad) < 0) {
+              if ((c.x - 10) < 0) {
                 c.x = x;
-                c.y = c.rad + (Math.random()*(h - (2*c.rad)));
+                c.y = 10+(Math.random()*(h-(20)));
               }
             });
 
@@ -144,7 +153,7 @@ let currentLevel = 1;
                 levels.pop();     
                 let y = 15 + (Math.random() * (h - (30)));
                 cats.push({x:x, y:y, speed:2, icon:catPic, rad:10});
-                cats.forEach((cat) => {cat.speed ++;});
+                cats.forEach((cat) => {cat.speed++;});
               }
             }
           if (mouse.health <= 0) {
@@ -153,16 +162,17 @@ let currentLevel = 1;
               ctx.fillText("Game Over", w/2 - 50, h/2);
             } else {
               requestAnimationFrame(gameMaker);
-            }
-        }
+            }}
+      }
         requestAnimationFrame(gameMaker);
       });
-
       document.addEventListener("keydown", (event) => {
-        if (event.keyCode == 38) {
-          mouse.y -= mouse.speed;
+        if (event.keyCode == 32) {
+          startGame = true;
         } else if (event.keyCode == 40) {
           mouse.y += mouse.speed;          
+        } else if (event.keyCode == 38) {
+          mouse.y -= mouse.speed;
         }
       });
     </script>
