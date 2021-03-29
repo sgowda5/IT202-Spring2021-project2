@@ -64,7 +64,15 @@
       let startGame = false;
 
       document.addEventListener("DOMContentLoaded", (event) => {
-         
+         let areColliding = (c1, c2) => {
+          let dy = c1.y - c2.y;
+          let dx = c1.x - c2.x;
+          let dist = Math.sqrt(dx*dx + dy*dy);
+          if (dist < (c1.rad + c2.rad)) {
+            return true;
+          }
+          return false;
+        }
         function gameMaker() {
           context.clearRect(0, 0, w, h);
 
@@ -92,7 +100,20 @@
             context.fill();
             context.drawImage(cat.icon, (cat.x - 10), (cat.y - 10), 20, 20);
             cat.x -= cat.speed;
-          });   
+          });
+
+          let x = (w);
+            cats.forEach( (cat) => {
+              if (areColliding(mouse, cat)) {
+                mouse.health--;
+                cat.x = x;
+                cat.y = cat.y = cat.rad + (Math.random()*(h - (2*cat.rad)));
+              }
+              if ((cat.x - cat.rad) < 0) {
+                cat.x = x;
+                cat.y = cat.rad + (Math.random()*(h - (2*cat.rad)));
+              }
+            });
 
           cheese.forEach((c) => {
               context.beginPath();
