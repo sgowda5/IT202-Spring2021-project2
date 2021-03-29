@@ -27,7 +27,7 @@
     <script>
 
       let canvas = document.querySelector("canvas");
-      let context = canvas.getContext("2d");
+      let ctx = canvas.getContext("2d");
       let w= canvas.width;
       let h= canvas.height;
 
@@ -42,6 +42,9 @@
       let totalCats = 3;
       let cats = [];
 
+
+let currentLevel = 1;
+      let levels = [300, 270, 240, 210, 180, 150, 120, 90, 60, 30];
       let x = w - 30;
       for (let i = 0; i < totalCats; i++) {
         let y = 15 + (Math.random() * (h - (30)));
@@ -74,17 +77,18 @@
           return false;
         }
         function gameMaker() {
-          context.clearRect(0, 0, w, h);
+          ctx.clearRect(0, 0, w, h);
 
-          context.drawImage(background, 0, 0, w, h);
-          context.font = "bold 10px Verdana";
-          context.fillStyle = "black";
-          context.beginPath();
-          context.arc(mouse.x, mouse.y, mouse.rad, 0, 2*Math.PI);
-          context.fillStyle = "black";
-          context.closePath();
-          context.fill();
-          context.drawImage(mouse.icon, (mouse.x - 10), (mouse.y - 12), 20, 20);
+            ctx.drawImage(background, 0, 0, w, h);
+            ctx.font = "bold 10px Verdana";
+            ctx.fillStyle = "black";
+            ctx.fillText("Score : " + mouse.score + " Health : " + mouse.health + " Level : " + currentLevel, 20, 10);
+            ctx.beginPath();
+            ctx.arc(mouse.x, mouse.y, mouse.rad, 0, 2*Math.PI);
+            ctx.fillStyle = "black";
+            ctx.closePath();
+            ctx.fill();
+            ctx.drawImage(mouse.icon, (mouse.x - 10), (mouse.y - 12), 20, 20);
 
           if ((mouse.y + mouse.rad) > h) {
             mouse.y = h - mouse.rad;
@@ -93,12 +97,12 @@
           }
 
           cats.forEach((cat) => {
-            context.beginPath();
-            context.arc(cat.x, cat.y, cat.rad, 0, 2*Math.PI);
-            context.fillStyle = "crimson";
-            context.closePath();
-            context.fill();
-            context.drawImage(cat.icon, (cat.x - 10), (cat.y - 10), 20, 20);
+            ctx.beginPath();
+            ctx.arc(cat.x, cat.y, cat.rad, 0, 2*Math.PI);
+            ctx.fillStyle = "crimson";
+            ctx.closePath();
+            ctx.fill();
+            ctx.drawImage(cat.icon, (cat.x - 10), (cat.y - 10), 20, 20);
             cat.x -= cat.speed;
           });
 
@@ -116,10 +120,10 @@
             });
 
           cheese.forEach((c) => {
-              context.beginPath();
-              context.arc(c.x, c.y, c.rad, 0, 2*Math.PI);
-              context.closePath();
-              context.drawImage(c.icon, (c.x - 10), (c.y - 12), 20, 20);
+              ctx.beginPath();
+              ctx.arc(c.x, c.y, c.rad, 0, 2*Math.PI);
+              ctx.closePath();
+              ctx.drawImage(c.icon, (c.x - 10), (c.y - 12), 20, 20);
               c.x -= c.speed;
             });
              cheese.forEach( (c) => {
