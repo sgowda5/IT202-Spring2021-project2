@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>IT202-Project-2</title>
+    <style>
+    canvas {
+      position: absolute;
+      background-color: "white";
+      height: 100vh;
+      width: 100vw;
+    }
+    body {
+      background-color: "white";
+      margin: 0;
+      padding: 0;
+    }
+    </style>
+  </head>
+
+  <body>
+    
+    <canvas id="canvas">
+    </canvas>
+ 
+    <script>
+
+      let canvas = document.querySelector("canvas");
+      let context = canvas.getContext("2d");
+
+      let w= canvas.width;
+      let h= canvas.height;
+
+      const mousePic = new Image();
+      mousePic.src = 'images/mouse.svg';
+      // player
+      let mouse = {x:(w/2)-80, y:(h/2), icon:mousePic,speed:15, score:0, health:10, rad:10};
+
+ 
+      const background = new Image();
+      background.src = 'images/background.jpg';
+      let startGame = false;
+
+      document.addEventListener("DOMContentLoaded", (event) => {
+        
+        let gameMaker = () => {
+          context.clearRect(0, 0, w, h);
+
+          context.drawImage(background, 0, 0, w, h);
+            context.font = "bold 10px Verdana";
+            context.fillStyle = "black";
+            context.beginPath();
+            context.arc(mouse.x, mouse.y, mouse.rad, 0, 2*Math.PI);
+            context.fillStyle = "black";
+            context.closePath();
+            context.fill();
+            context.drawImage(mouse.icon, (mouse.x - 10), (mouse.y - 12), 20, 20);
+
+            if ((mouse.y + mouse.rad) > h) {
+              mouse.y = h - mouse.rad;
+            } else if ((mouse.y - mouse.rad) < 0) {
+              mouse.y = mouse.rad;
+            }         
+        }
+        requestAnimationFrame(gameMaker);
+      });
+
+      document.addEventListener("keydown", (event) => {
+        if (event.keyCode == 38) {
+          mouse.y -= mouse.speed;
+        } else if (event.keyCode == 40) {
+          mouse.y += mouse.speed;          
+        }
+      });
+    </script>
+  </body>
+</html>
