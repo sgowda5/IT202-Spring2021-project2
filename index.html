@@ -48,6 +48,17 @@
         cats.push({x:x, y:y, speed:2, icon:catPic, rad:10});
       }
 
+            const cheesePic = new Image();
+      cheesePic.src = 'images/cheese.svg';
+
+      let totalCheese = 3;
+      let cheese = [];
+
+      for (let i = 0; i < totalCheese; i++) {
+        let y = 15 + (Math.random() * (h - (30)));
+        cheese.push({x:x, y:y, speed:2, icon:cheesePic, rad:10});
+      }
+
       const background = new Image();
       background.src = 'images/background.jpg';
       let startGame = false;
@@ -81,7 +92,15 @@
             context.fill();
             context.drawImage(cat.icon, (cat.x - 10), (cat.y - 10), 20, 20);
             cat.x -= cat.speed;
-          });        
+          });   
+
+          cheese.forEach((c) => {
+              context.beginPath();
+              context.arc(c.x, c.y, c.rad, 0, 2*Math.PI);
+              context.closePath();
+              context.drawImage(c.icon, (c.x - 10), (c.y - 12), 20, 20);
+              c.x -= c.speed;
+            });
           requestAnimationFrame(gameMaker);
         }
         requestAnimationFrame(gameMaker);
