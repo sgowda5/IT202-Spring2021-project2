@@ -137,6 +137,16 @@ let currentLevel = 1;
                 c.y = c.rad + (Math.random()*(h - (2*c.rad)));
               }
             });
+
+              for (let i = 0; i < 10; i++) {
+              if (mouse.score == levels[i]) {
+                currentLevel++;
+                levels.pop();     
+                let y = 15 + (Math.random() * (h - (30)));
+                cats.push({x:x, y:y, speed:2, icon:catPic, rad:10});
+                cats.forEach((cat) => {cat.speed ++;});
+              }
+            }
           if (mouse.health <= 0) {
               ctx.font = "bold 20px Verdana";
               ctx.fillStyle = "black";
