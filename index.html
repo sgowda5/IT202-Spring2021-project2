@@ -4,11 +4,11 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width">
     <title>IT202-Project-2</title>
-    <link rel="manifest" href="manifest.json" />
+    <link rel="manifest" href="manifest.json"/>
     <style>
     canvas {
       position: absolute;
-      background-color: "white";
+      background-color: "black";
       height: 100vh;
       width: 100vw;
     }
@@ -24,51 +24,54 @@
     
     <canvas id="canvas">
     </canvas>
-     <script>
+    <script>
+    let canvas= document.querySelector("canvas");
+    let ctx= canvas.getContext("2d");
+    let w= canvas.width;
+    let h= canvas.height;
 
-      let canvas = document.querySelector("canvas");
-      let ctx = canvas.getContext("2d");
-      let w= canvas.width;
-      let h= canvas.height;
       const mousePic = new Image();
       mousePic.src = 'images/mouse.svg';
       let mouse = {x:(w/2)-80, y:(h/2), icon:mousePic,speed:15, score:0, health:10, rad:10};
+
       const catPic = new Image();
       catPic.src = 'images/cat.svg';
-      let totalCats = 3;
-      let cats = [];
+      let totalCats=3;
+      let cats=[];
+
 let currentLevel = 1;
-      let levels = [300, 270, 240, 210, 180, 150, 120, 90, 60, 30];
-      let x = w - 30;
+    let levels = [300, 270, 240, 210, 180, 150, 120, 90, 60, 30];
+    let x = w-30;
       for (let i = 0; i < totalCats; i++) {
         let y = 15 + (Math.random() * (h - (30)));
         cats.push({x:x, y:y, speed:2, icon:catPic, rad:10});
       }
-           const cheesePic = new Image();
+
+            const cheesePic = new Image();
       cheesePic.src = 'images/cheese.svg';
-  let totalCheese = 3;
-  let cheese = [];
-  for (let i = 0; i < totalCheese; i++) {
-  let y = 15 + (Math.random() * (h - (30)));
-  cheese.push({x:x, y:y, speed:2, icon:cheesePic, rad:10});
-  }
-  const background = new Image();
-  background.src = 'images/background.jpg';
-  let startGame = false;
-  document.addEventListener("DOMContentLoaded", (event) => {
-     let areColliding = (c1, c2) => {
-      let dy = c1.y-c2.y;
+      let totalCheese= 3;
+      let cheese= [];
+
+      for (let i= 0; i < totalCheese; i++) {
+      let y = 15+(Math.random()*(h-(30)));
+      cheese.push({x:x, y:y, speed:2, icon:cheesePic, rad:10});
+      }
+
+      const background = new Image();
+      background.src = 'images/background.jpg';
+      let playingGame = false;
+      document.addEventListener("DOMContentLoaded", (event) => {
+         let areColliding = (c1, c2) => {
+          let dy = c1.y-c2.y;
           let dx = c1.x-c2.x;
           let dist = Math.sqrt(dx*dx+dy*dy);
-          if (dist<(c1.rad+c2.rad)) {
-            return true;
-          }
+          if (dist<(c1.rad+c2.rad)) { return true; }
           return false;
         }
 
-        function gameMaker() {
+        function gameCreator() {
           ctx.clearRect(0, 0, w, h);
-          if (!startGame == true) {
+          if (!playingGame == true) {
               ctx.font = "bold 25px Verdana";
               ctx.fillStyle = "black";
               ctx.fillText("Welcome", w/2-80, h/2-50);
@@ -77,31 +80,36 @@ let currentLevel = 1;
               ctx.fillText("Press Down arrow to go down", w/2-70, h/2-15);
               ctx.fillText("Esacpe the cats or they will eat you", w/2-70, h/2);
               ctx.fillText("Collect the cheese so you can eat it", w/2-70, h/2+15);
-              ctx.fillText("Press Space to Start", w/2 - 70, h/2 + 40);
-              requestAnimationFrame(gameMaker);
+              ctx.fillText("Press SPACE to Start", w/2 - 70, h/2 + 40);
+              requestAnimationFrame(gameCreator);
           } else {
             ctx.drawImage(background, 0, 0, w, h);
             ctx.font = "bold 10px Verdana";
             ctx.fillStyle = "black";
-            ctx.fillText("Score : "+mouse.score+" Health : "+mouse.health+" Level : "+currentLevel, 20, 10);
+            let a = 20;
+            let b = 10;
+            ctx.fillText("Score : "+mouse.score+" Health : "+mouse.health+" Level : "+currentLevel, a, b);
             ctx.beginPath();
             ctx.arc(mouse.x, mouse.y, mouse.rad, 0, 2*Math.PI);
             ctx.fillStyle = "black";
             ctx.closePath();
             ctx.fill();
-            ctx.drawImage(mouse.icon, (mouse.x - 10), (mouse.y - 12), 20, 20);
-          if ((mouse.y+mouse.rad)>h) {
-            mouse.y = h-mouse.rad;
-          } else if ((mouse.y-mouse.rad) < 0) {
-            mouse.y = mouse.rad;
-          }
+            let xp = (mouse.x-10);
+            let yp = (mouse.y-12);
+            ctx.drawImage(mouse.icon, xp, yp, a, a);
+
+          if ((mouse.y+mouse.rad)>h) { mouse.y = h-mouse.rad; }
+          else if ((mouse.y-mouse.rad)<0) { mouse.y = mouse.rad; }
+
           cats.forEach((cat) => {
             ctx.beginPath();
             ctx.arc(cat.x, cat.y, cat.rad, 0, 2*Math.PI);
             ctx.fillStyle = "crimson";
             ctx.closePath();
             ctx.fill();
-            ctx.drawImage(cat.icon, (cat.x - 10), (cat.y - 10), 20, 20);
+            let xcor = (cat.x-10);
+            let ycor = (cat.y-10);
+            ctx.drawImage(cat.icon, xcor, ycor, 20, 20);
             cat.x -= cat.speed;
           });
 
@@ -122,7 +130,9 @@ let currentLevel = 1;
               ctx.beginPath();
               ctx.arc(c.x, c.y, c.rad, 0, 2*Math.PI);
               ctx.closePath();
-              ctx.drawImage(c.icon, (c.x-10), (c.y-12), 20, 20);
+              let xpos = (c.x-10);
+              let ypos = (c.y-12);
+              ctx.drawImage(c.icon, xpos, ypos, 20, 20);
               c.x -= c.speed;
             });
              cheese.forEach( (c) => {
@@ -137,11 +147,11 @@ let currentLevel = 1;
               }
             });
 
-              for (let i = 0; i < 10; i++) {
+              for (let i = 80; i < 10; i++) {
               if (mouse.score == levels[i]) {
                 currentLevel++;
                 levels.pop();     
-                let y = 15 + (Math.random() * (h - (30)));
+                let y = 15+(Math.random()*(h-(30)));
                 cats.push({x:x, y:y, speed:2, icon:catPic, rad:10});
                 cats.forEach((cat) => {cat.speed++;});
               }
@@ -150,32 +160,32 @@ let currentLevel = 1;
               ctx.font = "bold 20px Verdana";
               ctx.fillStyle = "black";
               ctx.fillText("Game Over", w/2 - 50, h/2);
-            } else {
-              requestAnimationFrame(gameMaker);
-            }}
+            } 
+            else { requestAnimationFrame(gameCreator); }}
       }
-        requestAnimationFrame(gameMaker);
+        requestAnimationFrame(gameCreator);
       });
-      document.addEventListener("keydown", (event) => {
-        if (event.keyCode == 32) {
-          startGame = true;
-        } else if (event.keyCode == 40) {
-          mouse.y += mouse.speed;          
-        } else if (event.keyCode == 38) {
-          mouse.y -= mouse.speed;
-        }
+      document.addEventListener("keydown", (e) => {
+      if (e.keyCode == 32) 
+      { playingGame = true; }
+      else if (e.keyCode == 40) 
+      { mouse.y += mouse.speed; }
+      else if (e.keyCode == 38) 
+      { mouse.y -= mouse.speed; }
       });
     </script>
-    <script>
+
+        <script>
         if ('serviceWorker' in navigator) {
-          window.addEventListener('load', function() {
-            navigator.serviceWorker.register('./sw.js').then(function(registration) {
-              console.log('ServiceWorker registration successful with scope: ', registration.scope);
-            }, function(err) {
-              console.log('ServiceWorker registration failed: ', err);
-            });
+          window.addEventListener('load', () => {
+          navigator.serviceWorker.register('./sw.js').then((registration) => {
+          console.log('ServiceWorker registration successful with scope: ', registration.scope);
+          }, (err) => {
+            console.log('ServiceWorker registration failed: ', err);
           });
+        });
         }
     </script>
+
   </body>
 </html>
