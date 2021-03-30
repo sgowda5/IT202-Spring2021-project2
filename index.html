@@ -24,24 +24,19 @@
     
     <canvas id="canvas">
     </canvas>
- 
-    <script>
+     <script>
 
       let canvas = document.querySelector("canvas");
       let ctx = canvas.getContext("2d");
       let w= canvas.width;
       let h= canvas.height;
-
       const mousePic = new Image();
       mousePic.src = 'images/mouse.svg';
       let mouse = {x:(w/2)-80, y:(h/2), icon:mousePic,speed:15, score:0, health:10, rad:10};
-
       const catPic = new Image();
       catPic.src = 'images/cat.svg';
       let totalCats = 3;
       let cats = [];
-
-
 let currentLevel = 1;
       let levels = [300, 270, 240, 210, 180, 150, 120, 90, 60, 30];
       let x = w - 30;
@@ -49,18 +44,14 @@ let currentLevel = 1;
         let y = 15 + (Math.random() * (h - (30)));
         cats.push({x:x, y:y, speed:2, icon:catPic, rad:10});
       }
-
-            const cheesePic = new Image();
+           const cheesePic = new Image();
       cheesePic.src = 'images/cheese.svg';
-
   let totalCheese = 3;
   let cheese = [];
-
   for (let i = 0; i < totalCheese; i++) {
   let y = 15 + (Math.random() * (h - (30)));
   cheese.push({x:x, y:y, speed:2, icon:cheesePic, rad:10});
   }
-
   const background = new Image();
   background.src = 'images/background.jpg';
   let startGame = false;
@@ -99,13 +90,11 @@ let currentLevel = 1;
             ctx.closePath();
             ctx.fill();
             ctx.drawImage(mouse.icon, (mouse.x - 10), (mouse.y - 12), 20, 20);
-
           if ((mouse.y+mouse.rad)>h) {
             mouse.y = h-mouse.rad;
           } else if ((mouse.y-mouse.rad) < 0) {
             mouse.y = mouse.rad;
           }
-
           cats.forEach((cat) => {
             ctx.beginPath();
             ctx.arc(cat.x, cat.y, cat.rad, 0, 2*Math.PI);
@@ -176,10 +165,7 @@ let currentLevel = 1;
           mouse.y -= mouse.speed;
         }
       });
-
-
     </script>
-
     <script>
         if ('serviceWorker' in navigator) {
           window.addEventListener('load', function() {
@@ -191,6 +177,5 @@ let currentLevel = 1;
           });
         }
     </script>
-
   </body>
 </html>
