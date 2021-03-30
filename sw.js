@@ -8,31 +8,31 @@ let urlsToCache = [
   "./images/icons/icon.png"
 ];
 
-self.addEventListener('install', function(event) {
+self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME)
-    .then(function(cache) {
+    .then((cache) => {
     console.log('Opened cache');
     return cache.addAll(urlsToCache);
     })
   );
 });
 
-self.addEventListener('fetch', function(event) {
+self.addEventListener('fetch', (event) => {
   event.respondWith(
     caches.match(event.request)
-    .then(function(response) {
+    .then((response) => {
     if (response) {
       return response;
     }
      return fetch(event.request).then(
-     function(response) {
+     (response) => {
         if(!response || response.status !== 200 || response.type !== 'basic') {
           return response;
         }
         var responseToCache = response.clone();
          caches.open(CACHE_NAME)
-           .then(function(cache) {
+           .then((cache) => {
            cache.put(event.request, responseToCache);
          });
         return response;
