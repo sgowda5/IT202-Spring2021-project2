@@ -1,0 +1,17 @@
+{
+    "theme_color": "#dc143c",
+    "background_color": "#dc143c",
+    "display": "standalone",
+    "scope": "/",
+    "start_url": "index.html",
+    "name": "It-202 Project 2",
+    "short_name": "Project 2",
+    "description": "Project 2",
+    "icons": [
+        {
+            "src": "images/icons/icon.png",
+            "sizes": "256x256",
+            "type": "image/png"
+        }
+    ]
+}
