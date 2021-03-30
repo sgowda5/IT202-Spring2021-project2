@@ -25,6 +25,7 @@
     <canvas id="canvas">
     </canvas>
     <script>
+      // code for project 2
     let canvas= document.querySelector("canvas");
     let ctx= canvas.getContext("2d");
     let w= canvas.width;
@@ -40,7 +41,7 @@
       let cats=[];
 
 let currentLevel = 1;
-    let levels = [300, 270, 240, 210, 180, 150, 120, 90, 60, 30];
+let levels = [300, 270, 240, 210, 180, 150, 120, 90, 60, 30];
     let x = w-30;
       for (let i = 0; i < totalCats; i++) {
         let y = 15 + (Math.random() * (h - (30)));
@@ -174,7 +175,6 @@ let currentLevel = 1;
       { mouse.y -= mouse.speed; }
       });
     </script>
-
         <script>
         if ('serviceWorker' in navigator) {
           window.addEventListener('load', () => {
@@ -186,6 +186,5 @@ let currentLevel = 1;
         });
         }
     </script>
-
   </body>
 </html>
