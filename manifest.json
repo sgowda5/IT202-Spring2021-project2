@@ -2,7 +2,7 @@
     "theme_color": "#dc143c",
     "background_color": "#dc143c",
     "display": "standalone",
-    "scope": "/",
+    "scope": "./",
     "start_url": "index.html",
     "name": "It-202 Project 2",
     "short_name": "Project 2",
