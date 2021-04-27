@@ -1,5 +1,5 @@
-let CACHE_NAME = 'Project2-IT-202';
-let urlsToCache = [
+const cacheName = "Project2"
+const assets = [
   "./",
   "./images/background.jpg",
   "./images/cat.svg",
@@ -8,37 +8,20 @@ let urlsToCache = [
   "./images/icons/icon.png"
 ];
 
-self.addEventListener('install', function(event) {
-  event.waitUntil(
-    caches.open(CACHE_NAME)
-      .then(function(cache) {
-        console.log('Opened cache');
-        return cache.addAll(urlsToCache);
-      })
-  );
-});
+// event handler for the install event
+self.addEventListener("install", installEvent => {
+    installEvent.waitUntil(
+        caches.open(cacheName).then(cache => {
+            cache.addAll(assets)
+        })
+    )
+})
 
-self.addEventListener('fetch', function(event) {
-  event.respondWith(
-    caches.match(event.request)
-      .then(function(response) {
-        if (response) {
-          return response;
-        }
-        return fetch(event.request).then(
-          function(response) {
-            if(!response || response.status !== 200 || response.type !== 'basic') {
-              return response;
-            }
-            var responseToCache = response.clone();
-            caches.open(CACHE_NAME)
-              .then(function(cache) {
-                cache.put(event.request, responseToCache);
-              });
-
-            return response;
-          }
-        );
-      })
-    );
-});
+// event handler for the fetch event
+self.addEventListener("fetch", fetchEvent => {
+    fetchEvent.respondWith(
+        caches.match(fetchEvent.request).then(res => {
+            return res || fetch(fetchEvent.request)
+        })
+    )
+})
